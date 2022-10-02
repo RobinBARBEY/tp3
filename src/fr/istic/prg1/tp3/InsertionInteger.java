@@ -33,7 +33,14 @@ public class InsertionInteger {
 	 * @return copie de la partie remplie du tableau
 	 */
 	public int[] toArray() {
-		return null;
+		if(array==null) return new int[0];
+		int i = 0;
+		int[] copy_array = new int[array.length];
+		while(i < array.length && array[i] != -1){
+			copy_array[i] = array[i];
+			i++;
+		}
+		return copy_array;
 	}
 
 	/**
@@ -44,7 +51,6 @@ public class InsertionInteger {
 	 */
 	public void createArray(Scanner scanner) {
 		while (scanner.hasNext()){
-			System.out.println(scanner.nextInt());
 			insert(scanner.nextInt());
 		}
 	}
@@ -84,11 +90,11 @@ public class InsertionInteger {
 			if(array[j] == value){
 					return false;
 			}
-			if (array[i] > value) {
+			if (i > value) {
 				clone[j] = value;
 				j++;
 			}
-			clone[j] = array[i];
+			clone[j] = i;
 			j++;
 		}
 		return true;
