@@ -33,10 +33,9 @@ public class InsertionInteger {
 	 * @return copie de la partie remplie du tableau
 	 */
 	public int[] toArray() {
-		if(array==null) return new int[0];
 		int i = 0;
-		int[] copy_array = new int[array.length];
-		while(i < array.length && array[i] != -1){
+		int[] copy_array = new int[size];
+		while(i < size && array[i] != -1){
 			copy_array[i] = array[i];
 			i++;
 		}
@@ -51,7 +50,10 @@ public class InsertionInteger {
 	 */
 	public void createArray(Scanner scanner) {
 		while (scanner.hasNext()){
-			insert(scanner.nextInt());
+			int nextNumber = scanner.nextInt();
+			System.out.println(nextNumber);
+			if(nextNumber < 0){System.out.println("Arret scanner"); return;}
+			insert(nextNumber);
 		}
 	}
 
@@ -77,27 +79,48 @@ public class InsertionInteger {
 	 *         array[0..size-1]
 	 */
 	public boolean insert(int value) {
-
-		if(null == array){
-			array = new int[1];
+		if(size==0) {
+			size++;
+			array = new int[size];
 			array[0] = value;
+			System.out.println("insertion de " + value + " dans l'array: " + Arrays.toString(array));
 			return true;
 		}
-		if(array.length > 9) return false;
-		int[] clone = new int[array.length+1];
+		if(size >= SIZE_MAX) return false;
+		int[] clone = insertClone(value);
+		if(clone[0]!=-1) { //Vérification de la validité de la valeur de value au vu de l'insertion.
+			size++;
+			array = clone;
+			return true;
+		}
+		System.out.println("insertion de " + value + " dans l'array: " + Arrays.toString(array));
+		return false;
+	}
+
+	/**
+	 * @param value la valeur a inserer dans le clone du tableau array
+	 * @return clone, qui est le tableau array augmenter de la valeur value
+	 * @note si le premier element de clone est -1, l'insertion est considere comme invalide
+	 */
+	int[] insertClone(int value){
+		int[] clone = new int[size+1];
 		int j = 0;
-		for(int i:array){
-			if(array[j] == value){
-					return false;
+		for(int i = 0; i < size; ++i){
+			if(array[i] == value){
+				clone[0] = -1; //On considérera que si la premiere valeur de clone est -1, l'insertion est invalide.
+				break;
 			}
-			if (i > value) {
+			if (array[i] > value && i==j) {
+				System.out.printf("compteur i : %d, compteur j: %d \n",i,j);
 				clone[j] = value;
 				j++;
 			}
-			clone[j] = i;
+			 clone[j] = array[i];
 			j++;
 		}
-		return true;
+		if (clone[clone.length-1] == 0) clone[clone.length-1] = value;
+		System.out.println("insertion de " + value + " dans clone: " + Arrays.toString(clone));
+		return clone;
 	}
 
 	@Override
